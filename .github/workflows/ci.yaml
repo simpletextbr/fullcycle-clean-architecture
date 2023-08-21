@@ -2,7 +2,7 @@ name: ci-fullcycle-cleam-archtecture
 
 on:
   pull_request:
-    branches: [delvelop, main]
+    branches: [develop, main]
 
 jobs:
   quality-check:
