@@ -5,7 +5,7 @@ import CustomerRepository from "../../../../infrastructure/consumer/repository/c
 import CustomerModel from "../../../../infrastructure/consumer/sequelize/model/customer.model";
 import FindCustomerUseCase from "../../../../usecase/customer/find/find.customer.usecase";
 
-describe("Create Customer Use Case Integration Test", () => {
+describe("Find Customer Use Case Integration Test", () => {
   let sequelize: Sequelize;
   beforeEach(async () => {
     sequelize = new Sequelize({
