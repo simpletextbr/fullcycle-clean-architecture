@@ -33,8 +33,11 @@ export default class CustomerRepository implements ICustomerRepository {
     );
   }
   async find(id: string): Promise<Customer> {
-    const customer = await CustomerModel.findOne({ where: { id } });
-    return customer.toJSON();
+    const find = await CustomerModel.findOne({ where: { id } });
+    const customer = new Customer(find.id, find.name);
+    const address = new Address(find.street, find.number, find.zip, find.city);
+    customer.Address = address;
+    return customer;
   }
 
   async findAll(): Promise<Customer[]> {

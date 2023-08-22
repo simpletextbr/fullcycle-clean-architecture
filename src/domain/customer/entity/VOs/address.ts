@@ -24,19 +24,19 @@ export default class Address {
       throw new Error("City is required");
   }
 
-  get street() {
+  get street(): string {
     return this._street;
   }
 
-  get number() {
+  get number(): number {
     return this._number;
   }
 
-  get zip() {
+  get zip(): string {
     return this._zip;
   }
 
-  get city() {
+  get city(): string {
     return this._city;
   }
 
