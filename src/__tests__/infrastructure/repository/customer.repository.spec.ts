@@ -86,16 +86,7 @@ describe("Customer repository unit tests", () => {
 
     const customerFound = await customerRepository.find("1");
 
-    expect(customerFound).toStrictEqual({
-      id: customer.id,
-      name: customer.name,
-      active: customer.isActive(),
-      rewardPoints: customer.rewardPoints,
-      street: customer.address.street,
-      number: customer.address.number,
-      zip: customer.address.zip,
-      city: customer.address.city,
-    });
+    expect(customerFound).toStrictEqual(customer);
   });
 
   it("should find all customers", async () => {
