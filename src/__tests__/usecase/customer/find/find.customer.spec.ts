@@ -28,6 +28,8 @@ describe("Find Customer Use Case unit Test", () => {
     const output = {
       id: "123",
       name: "John Doe",
+      active: true,
+      rewardPoints: 0,
       address: {
         street: "street 1",
         city: "city 1",

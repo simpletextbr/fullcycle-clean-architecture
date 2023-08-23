@@ -63,12 +63,17 @@ describe("Product repository unit tests", () => {
 
     const productFound = await productRepository.find("1");
 
-    expect(productFound).toStrictEqual({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-    });
+    expect(productFound).toStrictEqual(product);
   });
+
+  it("should not find a product", async () => {
+    const productRepository = new ProductRepository();
+
+    expect(async () => {
+      await productRepository.find("");
+    }).rejects.toThrowError("Product not found");
+  });
+
   it("should find all products", async () => {
     const productRepository = new ProductRepository();
     const product1 = new Product("1", "Product 1", 100);

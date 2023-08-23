@@ -89,6 +89,14 @@ describe("Customer repository unit tests", () => {
     expect(customerFound).toStrictEqual(customer);
   });
 
+  it("should throw an error when customer is not found", async () => {
+    const customerRepository = new CustomerRepository();
+
+    expect(async () => {
+      await customerRepository.find("456ABC");
+    }).rejects.toThrow("Customer not found");
+  });
+
   it("should find all customers", async () => {
     const customerRepository = new CustomerRepository();
     const customer1 = new Customer("1", "Customer 1");
