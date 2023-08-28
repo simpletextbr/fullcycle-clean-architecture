@@ -30,4 +30,53 @@ describe(" E2E Test for Customer API", () => {
     expect(response.body.address.zip).toEqual("12345");
     expect(response.body.address.city).toEqual("Anytown");
   });
+
+  it("should not create a customer", async () => {
+    const response = await request(app).post("/customer").send({
+      name: "John Doe",
+    });
+
+    expect(response.status).toBe(500);
+  });
+
+  it("should list all customers", async () => {
+    const response = await request(app)
+      .post("/customer")
+      .send({
+        name: "John Doe",
+        address: {
+          street: "123 Main St",
+          number: 1,
+          zip: "12345",
+          city: "Anytown",
+        },
+      });
+
+    expect(response.status).toBe(201);
+
+    const response2 = await request(app)
+      .post("/customer")
+      .send({
+        name: "Jane Doe",
+        address: {
+          street: "456 Main St",
+          number: 2,
+          zip: "6789",
+          city: "Anytown",
+        },
+      });
+
+    expect(response2.status).toBe(201);
+
+    const listResponse = await request(app).get("/customer").send();
+    const customer = listResponse.body.customers[0];
+    const customer2 = listResponse.body.customers[1];
+
+    expect(listResponse.status).toBe(200);
+    expect(listResponse.body.customers.length).toBe(2);
+    expect(customer.name).toBe("John Doe");
+    expect(customer.address.street).toBe("123 Main St");
+    expect(customer2.name).toBe("Jane Doe");
+    expect(customer2.address.street).toBe("456 Main St");
+  });
 });
