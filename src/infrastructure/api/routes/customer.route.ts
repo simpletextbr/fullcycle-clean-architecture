@@ -2,12 +2,12 @@ import express, { Request, Response } from "express";
 import { InputCreateCustomerDto } from "../../../usecase/customer/DTOs/create.customer.dto";
 import CreateCustomerUseCase from "../../../usecase/customer/create/create.customer.usecase";
 import ListCustomerUseCase from "../../../usecase/customer/list/list.customer.usecase";
-import customerRepository from "../../consumer/repository/customer.repository";
+import CustomerRepository from "../../consumer/repository/customer.repository";
 
 export const customerRoute = express.Router();
 
 customerRoute.post("/", async (req: Request, res: Response) => {
-  const usecase = new CreateCustomerUseCase(new customerRepository());
+  const usecase = new CreateCustomerUseCase(new CustomerRepository());
   try {
     const customerDto: InputCreateCustomerDto = {
       name: req.body.name,
@@ -19,18 +19,16 @@ customerRoute.post("/", async (req: Request, res: Response) => {
       },
     };
     const result = await usecase.execute(customerDto);
-    return res.status(201).send(result);
+    res.status(201).send(result);
   } catch (err) {
-    return res.status(500).send({ message: err });
+    res.status(500).send(err);
   }
 });
 
 customerRoute.get("/", async (req: Request, res: Response) => {
-  const usecase = new ListCustomerUseCase(new customerRepository());
-  try {
-    const result = await usecase.execute({});
-    return res.status(200).send(result);
-  } catch (err) {
-    return res.status(500).send({ message: err });
-  }
+  const usecase = new ListCustomerUseCase(new CustomerRepository());
+  const result = await usecase.execute({});
+  res.format({
+    json: async () => res.status(200).send(result),
+  });
 });

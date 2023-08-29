@@ -14,7 +14,7 @@ describe(" E2E Test for Customer API", () => {
     const response = await request(app)
       .post("/customer")
       .send({
-        name: "John Doe",
+        name: "John Doe first",
         address: {
           street: "123 Main St",
           number: 1,
@@ -24,7 +24,7 @@ describe(" E2E Test for Customer API", () => {
       });
 
     expect(response.status).toBe(201);
-    expect(response.body.name).toEqual("John Doe");
+    expect(response.body.name).toEqual("John Doe first");
     expect(response.body.address.street).toEqual("123 Main St");
     expect(response.body.address.number).toEqual(1);
     expect(response.body.address.zip).toEqual("12345");
@@ -69,13 +69,13 @@ describe(" E2E Test for Customer API", () => {
     expect(response2.status).toBe(201);
 
     const listResponse = await request(app).get("/customer").send();
-    const customer = listResponse.body.customers[0];
-    const customer2 = listResponse.body.customers[1];
 
     expect(listResponse.status).toBe(200);
-    expect(listResponse.body.customers.length).toBe(2);
+    expect(listResponse.body.customers.length).toBe(3);
+    const customer = listResponse.body.customers[1];
     expect(customer.name).toBe("John Doe");
     expect(customer.address.street).toBe("123 Main St");
+    const customer2 = listResponse.body.customers[2];
     expect(customer2.name).toBe("Jane Doe");
     expect(customer2.address.street).toBe("456 Main St");
   });
