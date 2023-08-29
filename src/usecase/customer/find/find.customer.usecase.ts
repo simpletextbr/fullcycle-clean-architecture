@@ -19,6 +19,8 @@ export default class FindCustomerUseCase {
     return {
       id: customer.id,
       name: customer.name,
+      active: customer.isActive(),
+      rewardPoints: customer.rewardPoints,
       address: {
         street: customer.address.street,
         number: customer.address.number,

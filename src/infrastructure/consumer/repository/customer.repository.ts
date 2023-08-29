@@ -51,7 +51,7 @@ export default class CustomerRepository implements ICustomerRepository {
 
   async findAll(): Promise<Customer[]> {
     const customersModel = await CustomerModel.findAll();
-    return customersModel.map((customerModel) => {
+    const customers = customersModel.map((customerModel) => {
       let customer = new Customer(customerModel.id, customerModel.name);
       customer.giveRewardPoints(customerModel.rewardPoints);
       const address = new Address(
@@ -64,5 +64,7 @@ export default class CustomerRepository implements ICustomerRepository {
 
       return customer;
     });
+
+    return customers;
   }
 }

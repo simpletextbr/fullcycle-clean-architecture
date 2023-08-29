@@ -5,6 +5,8 @@ export interface InputFindCustomerDto {
 export interface OutputFindCustomerDto {
   id: string;
   name: string;
+  active: boolean;
+  rewardPoints: number;
   address: {
     street: string;
     city: string;
