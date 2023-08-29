@@ -4,7 +4,7 @@ import CustomerModel from "../consumer/sequelize/model/customer.model";
 import { customerRoute } from "./routes/customer.route";
 
 export const app: Express = express();
-
+app.disable("x-powered-by");
 app.use(express.json());
 app.use("/customer", customerRoute);
 
@@ -14,7 +14,7 @@ async function setupDb() {
   sequelize = new Sequelize({
     dialect: "sqlite",
     storage: ":memory:",
-    logging: true,
+    logging: false,
   });
   await sequelize.addModels([CustomerModel]);
   await sequelize.sync();
