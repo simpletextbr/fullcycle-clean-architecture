@@ -1,10 +1,14 @@
-export default class Address {
+import Entity from "../../../@shared/entity/Entity.abstract";
+import NotificationError from "../../../@shared/notification/notification.error";
+
+export default class Address extends Entity {
   private _street: string;
   private _number: number;
   private _zip: string;
   private _city: string;
 
   constructor(street: string, number: number, zip: string, city: string) {
+    super();
     this._street = street;
     this._number = number;
     this._zip = zip;
@@ -14,14 +18,34 @@ export default class Address {
   }
 
   validate() {
-    if (!this._street || this._street.length === 0)
-      throw new Error("Street is required");
-    if (!this._number || isNaN(this._number))
-      throw new Error("Number is required");
-    if (!this._zip || this._zip.length === 0)
-      throw new Error("Zip Code is required");
-    if (!this._city || this._city.length === 0)
-      throw new Error("City is required");
+    if (!this._street || this._street.length === 0) {
+      this.notification.addError({
+        message: "Street is required",
+        context: "address",
+      });
+    }
+    if (!this._number || isNaN(this._number)) {
+      this.notification.addError({
+        message: "Number is required",
+        context: "address",
+      });
+    }
+    if (!this._zip || this._zip.length === 0) {
+      this.notification.addError({
+        message: "Zip Code is required",
+        context: "address",
+      });
+    }
+    if (!this._city || this._city.length === 0) {
+      this.notification.addError({
+        message: "City is required",
+        context: "address",
+      });
+    }
+
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.errors);
+    }
   }
 
   get street(): string {
