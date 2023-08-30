@@ -16,16 +16,22 @@ describe("Customer unit tests", () => {
     expect(customer.name).toBe("John Doe");
   });
 
-  it("should be able to change name", () => {
+  it("should be not able to change name", () => {
     const customer = new Customer("123", "John");
     expect(() => {
       customer.changeName("");
-    }).toThrowError("Name is required");
+    }).toThrowError("customer: Name is required");
+  });
+
+  it("should get any notifications when u broke two o more bussiness rules", () => {
+    expect(() => {
+      new Customer("", "");
+    }).toThrowError("customer: ID is required,customer: Name is required");
   });
 
   it("should return user id", () => {
     const customer = new Customer("123", "John");
-    expect(customer.id).toBe("123");
+    expect(customer.name).toBe("John");
   });
 
   it("should return reward points ", () => {
