@@ -2,16 +2,20 @@ import Product from "../../../../domain/product/entity/product";
 
 describe("Product unit test", () => {
   it("should throw error when id is empty", () => {
-    expect(() => new Product("", "name", 1)).toThrowError("ID is required");
+    expect(() => new Product("", "name", 1)).toThrowError(
+      "product: ID is required"
+    );
   });
 
   it("should throw error when name is empty", () => {
-    expect(() => new Product("1", "", 1)).toThrowError("Name is required");
+    expect(() => new Product("1", "", 1)).toThrowError(
+      "product: Name is required"
+    );
   });
 
   it("should throw error when price is less than 0", () => {
     expect(() => new Product("1", "name", -1)).toThrowError(
-      "Price cannot be less than 0"
+      "product: Price cannot be less than 0"
     );
   });
 
@@ -42,5 +46,13 @@ describe("Product unit test", () => {
     const product = new Product("1", "name", 1);
     product.changePrice(2);
     expect(product.price).toEqual(2);
+  });
+
+  it("should get any notifications when u broke two or more bussiness rules", () => {
+    expect(() => {
+      new Product("", "", -1);
+    }).toThrowError(
+      "product: ID is required,product: Name is required,product: Price cannot be less than 0"
+    );
   });
 });
