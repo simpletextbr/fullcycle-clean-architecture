@@ -1,25 +1,44 @@
+import Entity from "../../@shared/entity/Entity.abstract";
+import NotificationError from "../../@shared/notification/notification.error";
 import Address from "./VOs/address";
 
 // UMA ENTIDATE DE NEGOCIO POR PADRÃO DEVE SE AUTO-VALIDAR GARANTINDO SUA CONSISTÊNCIA
-export default class Customer {
-  private _id: string;
+export default class Customer extends Entity {
   private _name: string;
   private _address!: Address;
   private _active: boolean = false;
   private _rewardPoints: number = 0;
 
   constructor(id: string, name: string) {
+    super();
     this._id = id;
     this._name = name;
     this.validate();
   }
 
   validate() {
-    if (!this._id || this._id.length === 0) throw new Error("ID is required");
-    if (!this._name || this._name.length === 0)
-      throw new Error("Name is required");
-    if (this._rewardPoints < 0)
-      throw new Error("Reward points must be greater than or equal to 0");
+    if (!this.id || this.id.length === 0) {
+      this.notification.addError({
+        message: "ID is required",
+        context: "customer",
+      });
+    }
+    if (!this._name || this._name.length === 0) {
+      this.notification.addError({
+        message: "Name is required",
+        context: "customer",
+      });
+    }
+    if (this._rewardPoints < 0) {
+      this.notification.addError({
+        message: "Reward points must be greater than or equal to 0",
+        context: "customer",
+      });
+    }
+
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.errors);
+    }
   }
 
   changeName(name: string) {
@@ -49,10 +68,6 @@ export default class Customer {
 
   get name(): string {
     return this._name;
-  }
-
-  get id(): string {
-    return this._id;
   }
 
   get rewardPoints(): number {
