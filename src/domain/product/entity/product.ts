@@ -1,9 +1,12 @@
-export default class Product {
-  private _id: string;
+import Entity from "../../@shared/entity/Entity.abstract";
+import NotificationError from "../../@shared/notification/notification.error";
+
+export default class Product extends Entity {
   private _name: string;
   private _price: number;
 
   constructor(id: string, name: string, price: number) {
+    super();
     this._id = id;
     this._name = name;
     this._price = price;
@@ -11,10 +14,27 @@ export default class Product {
   }
 
   validate(): void {
-    if (!this._id || this._id.length === 0) throw new Error("ID is required");
-    if (!this._name || this._name.length === 0)
-      throw new Error("Name is required");
-    if (this._price < 0) throw new Error("Price cannot be less than 0");
+    if (!this._id || this._id.length === 0) {
+      this.notification.addError({
+        message: "ID is required",
+        context: "product",
+      });
+    }
+    if (!this._name || this._name.length === 0) {
+      this.notification.addError({
+        message: "Name is required",
+        context: "product",
+      });
+    }
+    if (this._price < 0) {
+      this.notification.addError({
+        message: "Price cannot be less than 0",
+        context: "product",
+      });
+    }
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.errors);
+    }
   }
 
   changeName(name: string): void {
