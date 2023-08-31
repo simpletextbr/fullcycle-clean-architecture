@@ -1,15 +1,16 @@
 import { toXML } from "jstoxml";
 import { OutputListCustomerDTO } from "../../../usecase/customer/DTOs/list.customer.dto";
+import { OutputListProductDto } from "../../../usecase/products/DTOs/list.product.dto";
 
-export default class CustomerPresenter {
+const xmlOption = {
+  header: true,
+  indent: "  ",
+  newline: "\n",
+  allowEmpty: true,
+};
+
+export class CustomerListPresenter {
   static toXML(data: OutputListCustomerDTO): string {
-    const xmlOption = {
-      header: true,
-      indent: "  ",
-      newline: "\n",
-      allowEmpty: true,
-    };
-
     return toXML({
       customers: {
         customer: data.customers.map((customer) => ({
@@ -23,6 +24,21 @@ export default class CustomerPresenter {
             number: customer.address.number,
             zip: customer.address.zip,
           },
+        })),
+      },
+      xmlOption,
+    });
+  }
+}
+
+export class ProductListPresenter {
+  static toXML(data: OutputListProductDto): string {
+    return toXML({
+      products: {
+        product: data.products.map((product) => ({
+          id: product.id,
+          name: product.name,
+          price: product.price,
         })),
       },
       xmlOption,

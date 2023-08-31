@@ -79,4 +79,43 @@ describe(" E2E Test for Customer API", () => {
     expect(customer2.name).toBe("Jane Doe");
     expect(customer2.address.street).toBe("456 Main St");
   });
+
+  it("should list all customers in XML", async () => {
+    const response = await request(app)
+      .post("/customer")
+      .send({
+        name: "John Doe",
+        address: {
+          street: "123 Main St",
+          number: 1,
+          zip: "12345",
+          city: "Anytown",
+        },
+      });
+
+    expect(response.status).toBe(201);
+
+    const response2 = await request(app)
+      .post("/customer")
+      .send({
+        name: "Jane Doe",
+        address: {
+          street: "456 Main St",
+          number: 2,
+          zip: "6789",
+          city: "Anytown",
+        },
+      });
+
+    expect(response2.status).toBe(201);
+
+    const listResponseXML = await request(app)
+      .get("/customer")
+      .set("Accept", "application/xml")
+      .send();
+
+    expect(listResponseXML.status).toBe(200);
+    expect(listResponseXML.text).toContain("<name>John Doe</name>");
+    expect(listResponseXML.text).toContain("<street>123 Main St</street>");
+  });
 });
