@@ -1,5 +1,6 @@
 import Entity from "../../@shared/entity/Entity.abstract";
 import NotificationError from "../../@shared/notification/notification.error";
+import CustomerValidatorFactory from "../factory/customer.validator.factory";
 import Address from "./VOs/address";
 
 // UMA ENTIDATE DE NEGOCIO POR PADRÃO DEVE SE AUTO-VALIDAR GARANTINDO SUA CONSISTÊNCIA
@@ -17,25 +18,7 @@ export default class Customer extends Entity {
   }
 
   validate() {
-    if (!this.id || this.id.length === 0) {
-      this.notification.addError({
-        message: "ID is required",
-        context: "customer",
-      });
-    }
-    if (!this._name || this._name.length === 0) {
-      this.notification.addError({
-        message: "Name is required",
-        context: "customer",
-      });
-    }
-    if (this._rewardPoints < 0) {
-      this.notification.addError({
-        message: "Reward points must be greater than or equal to 0",
-        context: "customer",
-      });
-    }
-
+    CustomerValidatorFactory.create().validate(this);
     if (this.notification.hasErrors()) {
       throw new NotificationError(this.notification.errors);
     }
