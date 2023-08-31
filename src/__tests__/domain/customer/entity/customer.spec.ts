@@ -23,7 +23,7 @@ describe("Customer unit tests", () => {
     }).toThrowError("customer: Name is required");
   });
 
-  it("should get any notifications when u broke two o more bussiness rules", () => {
+  it("should get any notifications when u broke two or more bussiness rules", () => {
     expect(() => {
       new Customer("", "");
     }).toThrowError("customer: ID is required,customer: Name is required");
