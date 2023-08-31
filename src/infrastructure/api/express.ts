@@ -1,12 +1,13 @@
 import express, { Express } from "express";
 import { Sequelize } from "sequelize-typescript";
 import CustomerModel from "../consumer/sequelize/model/customer.model";
-import { customerRoute } from "./routes/customer.route";
+import ProductModel from "../product/sequelize/model/product.model";
+import { routes } from "./routes/index.route";
 
 export const app: Express = express();
 app.disable("x-powered-by");
 app.use(express.json());
-app.use("/customer", customerRoute);
+app.use(routes);
 
 export let sequelize: Sequelize;
 
@@ -16,7 +17,7 @@ async function setupDb() {
     storage: ":memory:",
     logging: false,
   });
-  await sequelize.addModels([CustomerModel]);
+  sequelize.addModels([CustomerModel, ProductModel]);
   await sequelize.sync();
 }
 
