@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import IValidator from "../../@shared/validator/validator.interface";
+import IValidator from "../../@shared/validator/IValidatorRepository";
 import Customer from "../entity/customer";
 
 export default class CustomerValidator implements IValidator<Customer> {
