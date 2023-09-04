@@ -1,23 +1,21 @@
 import * as yup from "yup";
 import IValidator from "../../@shared/validator/IValidatorRepository";
-import Customer from "../entity/customer";
+import Product from "../entity/product";
 
-export default class CustomerValidator implements IValidator<Customer> {
-  validate(entity: Customer): void {
+export default class ProductValidator implements IValidator<Product> {
+  validate(entity: Product): void {
     try {
       const schema = yup.object().shape({
         id: yup.string().required("ID is required"),
         name: yup.string().required("Name is required"),
-        rewardPoints: yup
-          .number()
-          .min(0, "Reward points must be greater than or equal to 0"),
+        price: yup.number().min(0, "Price cannot be less than 0"),
       });
 
       schema.validateSync(
         {
           id: entity.id,
           name: entity.name,
-          rewardPoints: entity.rewardPoints,
+          price: entity.price,
         },
         {
           abortEarly: false,
@@ -28,7 +26,7 @@ export default class CustomerValidator implements IValidator<Customer> {
       e.errors.forEach((error) => {
         entity.notification.addError({
           message: error,
-          context: "customer",
+          context: "product",
         });
       });
     }
