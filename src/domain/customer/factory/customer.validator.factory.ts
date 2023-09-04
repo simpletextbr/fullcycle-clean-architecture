@@ -1,4 +1,4 @@
-import IValidator from "../../@shared/validator/validator.interface";
+import IValidator from "../../@shared/validator/IValidatorRepository";
 import Customer from "../entity/customer";
 import CustomerValidator from "../validator/customer.yup.validator";
 

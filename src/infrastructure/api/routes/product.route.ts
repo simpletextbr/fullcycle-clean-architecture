@@ -3,6 +3,7 @@ import { InputCreateProductDto } from "../../../usecase/products/DTOs/create.pro
 import CreateProductUseCase from "../../../usecase/products/create/create.product.usecase";
 import ListProductUseCase from "../../../usecase/products/list/list.products.usecase";
 import ProductRepository from "../../product/repository/product.repository";
+import { ProductListPresenter } from "../presenters/list.presenter";
 
 export const productRoute = express.Router();
 
@@ -26,5 +27,6 @@ productRoute.get("/", (async (req: Request, res: Response) => {
   const result = await usecase.execute({});
   res.format({
     json: async () => res.status(200).send(result),
+    xml: async () => res.status(200).send(ProductListPresenter.toXML(result)),
   });
 }) as RequestHandler);
